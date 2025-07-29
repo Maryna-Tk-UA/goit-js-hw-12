@@ -14,9 +14,9 @@ import {createGallery,
     } from "./js/render-functions";
 
     let page = 1;
+    const perPage = 15;
     let currentQuery = "";
     let totalPages = 0;
-    const perPage = 15;
 
 form.addEventListener("submit", handleClick);
 
@@ -24,14 +24,13 @@ form.addEventListener("submit", handleClick);
   event.preventDefault();
 
   currentQuery = event.target.elements['search-text'].value.trim();
-  page = 1;
   
   showLoader(); 
   hideLoadMoreButton();
   clearGallery();
- 
 
   if(currentQuery === "") {
+    hideLoader();
     iziToast.error({
            message: "The search field cannot be empty",
             position: 'topRight',
@@ -46,7 +45,7 @@ form.addEventListener("submit", handleClick);
   }
   try {
 
-    const data = await getImagesByQuery(currentQuery, page = 1);
+    const data = await getImagesByQuery(currentQuery, page);
 
     if(data.hits.length === 0) {
       iziToast.warning({
@@ -59,6 +58,7 @@ form.addEventListener("submit", handleClick);
             iconUrl: new URL('./img/error.svg', import.meta.url).href,
             close: false
         })
+        return;
     }
 
     createGallery(data.hits);
@@ -67,14 +67,22 @@ form.addEventListener("submit", handleClick);
 
     if(page < totalPages) {
       showLoadMoreButton();
+    } else {
+      iziToast.info({
+           message: "We're sorry, but you've reached the end of search results.",
+            position: 'topRight',
+            backgroundColor: '#5f9ae8ff',
+            progressBar: false,
+            messageColor: "white",
+            icon: "",
+            iconUrl: new URL('./img/wink.svg', import.meta.url).href,
+            close: false
+        })
     }
-    
-    
-  
 
   } catch(error) {
       iziToast.error({
-           message: "Ooooops! Something went wrong",
+           message: `Error: ${error.message}`,
             position: 'topRight',
             backgroundColor: '#c30d7dff',
             progressBar: false,
@@ -102,15 +110,16 @@ async function loadMoreHandler() {
     
     if(page < totalPages) {
       showLoadMoreButton();
+  
     } else {
-       iziToast.warning({
+       iziToast.info({
            message: "We're sorry, but you've reached the end of search results.",
             position: 'topRight',
-            backgroundColor: '#c30d7dff',
+            backgroundColor: "#5f9ae8ff",
             progressBar: false,
             messageColor: "white",
             icon: "",
-            iconUrl: new URL('./img/error.svg', import.meta.url).href,
+            iconUrl: new URL('./img/wink.svg', import.meta.url).href,
             close: false
         })
     }
@@ -142,9 +151,6 @@ async function loadMoreHandler() {
 }
 
 
-function foo() {
-  // !!! прибрати
-}
 
 
 

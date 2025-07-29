@@ -1,7 +1,6 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-
 export const refs = {
   btnLoadMore: document.querySelector(".js-load-more"),
 }
@@ -9,7 +8,6 @@ export const refs = {
 const galleryContainer = document.querySelector(".gallery");
 const lightbox = new SimpleLightbox('.gallery a');
 const loader = document.querySelector('.container-loader');
-const btnLoadMore = document.querySelector(".js-load-more");
 
 export function createGallery(images) {
         const markup = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
@@ -55,9 +53,9 @@ loader.classList.remove('is-active');
 }
 
 export function hideLoadMoreButton() {
-  btnLoadMore.classList.add('js-load-more-hidden');
+  refs.btnLoadMore.classList.add('js-load-more-hidden');
 }
 
 export function showLoadMoreButton() {
-  btnLoadMore.classList.remove('js-load-more-hidden');
+  refs.btnLoadMore.classList.remove('js-load-more-hidden');
 }

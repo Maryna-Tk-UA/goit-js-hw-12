@@ -65,7 +65,7 @@ form.addEventListener("submit", handleClick);
 
     totalPages = Math.ceil(data.totalHits / perPage);
 
-    if(page < totalPages) {
+    if(data.hits.length < perPage || page >= totalPages) {
       showLoadMoreButton();
     } else {
       iziToast.info({
@@ -108,9 +108,10 @@ async function loadMoreHandler() {
     const data = await getImagesByQuery(currentQuery, page);
     createGallery(data.hits);
     
-    if(page < totalPages) {
+    if(data.hits.length < perPage || page >= totalPages) {
+      
       showLoadMoreButton();
-  
+      
     } else {
        iziToast.info({
            message: "We're sorry, but you've reached the end of search results.",

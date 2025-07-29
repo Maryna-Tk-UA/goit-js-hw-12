@@ -142,6 +142,10 @@ async function loadMoreHandler() {
 }
 
 
+function foo() {
+  // !!! прибрати
+}
+
 
 
 

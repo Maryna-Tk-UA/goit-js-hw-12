@@ -65,9 +65,9 @@ form.addEventListener("submit", handleClick);
 
     totalPages = Math.ceil(data.totalHits / perPage);
 
-    if(data.hits.length < perPage || page >= totalPages) {
-      showLoadMoreButton();
-    } else {
+console.log(data)
+
+    if(page >= totalPages) {
       iziToast.info({
            message: "We're sorry, but you've reached the end of search results.",
             position: 'topRight',
@@ -78,6 +78,9 @@ form.addEventListener("submit", handleClick);
             iconUrl: new URL('./img/wink.svg', import.meta.url).href,
             close: false
         })
+    } else {
+      
+        showLoadMoreButton();
     }
 
   } catch(error) {
@@ -108,21 +111,20 @@ async function loadMoreHandler() {
     const data = await getImagesByQuery(currentQuery, page);
     createGallery(data.hits);
     
-    if(data.hits.length < perPage || page >= totalPages) {
-      
-      showLoadMoreButton();
-      
-    } else {
-       iziToast.info({
+   if(page >= totalPages) {
+      iziToast.info({
            message: "We're sorry, but you've reached the end of search results.",
             position: 'topRight',
-            backgroundColor: "#5f9ae8ff",
+            backgroundColor: '#5f9ae8ff',
             progressBar: false,
             messageColor: "white",
             icon: "",
             iconUrl: new URL('./img/wink.svg', import.meta.url).href,
             close: false
         })
+    } else {
+      
+        showLoadMoreButton();
     }
 
     const card = document.querySelector(".gallery-item");
@@ -166,62 +168,6 @@ async function loadMoreHandler() {
 
 
 
-// function handleClick(event) {
-//     event.preventDefault();
-    
-//     const inputValue = event.target.elements['search-text'].value.trim();
-    
-//     if(inputValue === "") {
-//           iziToast.error({
-//            message: "The search field cannot be empty",
-//             position: 'topRight',
-//             backgroundColor: '#ef4040',
-//             progressBar: false,
-//             messageColor: "white",
-//             icon: "",
-//             iconUrl: new URL('./img/error.svg', import.meta.url).href,
-//             close: false
-//         })
-        
-//         return;
-//     }
 
-//    clearGallery();
-//    showLoader();
-   
-
-//     getImagesByQuery(inputValue)
-//   .then(data => {
-//     if(data.hits.length === 0) {
-//       iziToast.warning({
-//            message: "Sorry, there are no images matching your search query. Please try again!",
-//             position: 'topRight',
-//             backgroundColor: '#ef4040',
-//             progressBar: false,
-//             messageColor: "white",
-//             icon: "",
-//             iconUrl: new URL('./img/error.svg', import.meta.url).href,
-//             close: false
-//         })
-//     }
-//     createGallery(data.hits); 
-//   })
-//   .catch(error => {
-//       iziToast.error({
-//            message: "Ooooops! Something went wrong",
-//             position: 'topRight',
-//             backgroundColor: '#ef4040',
-//             progressBar: false,
-//             messageColor: "white",
-//             icon: "",
-//             iconUrl: new URL('./img/error.svg', import.meta.url).href,
-//             close: false
-//         })
-//   })
-//   .finally(() => {
-//     hideLoader();
-    
-//   })
-// }
 
 

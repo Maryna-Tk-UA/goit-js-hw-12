@@ -1,29 +1,15 @@
-// createGallery(images). Ця функція повинна приймати масив images, 
-// створювати HTML-розмітку для галереї, додавати її в контейнер галереї
-//  та викликати метод екземпляра SimpleLightbox refresh(). 
-// Нічого не повертає.
-
-// clearGallery(). Ця функція нічого не приймає та повинна очищати вміст 
-// контейнера галереї. Нічого не повертає.
-
-// showLoader(). Ця функція нічого не приймає, повинна додавати клас для 
-// відображення лоадера. Нічого не повертає.
-
-// hideLoader(). Ця функція нічого не приймає, повинна прибирати клас для
-//  відображення лоадера. Нічого не повертає.
-
-// showLoadMoreButton(). Ця функція нічого не приймає, повинна додавати 
-// клас для відображення кнопки Load more. Нічого не повертає.
-
-// hideLoadMoreButton(). Ця функція нічого не приймає, повинна прибирати 
-// клас для відображення кнопки Load more. Нічого не повертає.
-
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+
+
+export const refs = {
+  btnLoadMore: document.querySelector(".js-load-more"),
+}
 
 const galleryContainer = document.querySelector(".gallery");
 const lightbox = new SimpleLightbox('.gallery a');
 const loader = document.querySelector('.container-loader');
+const btnLoadMore = document.querySelector(".js-load-more");
 
 export function createGallery(images) {
         const markup = images.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
@@ -61,11 +47,17 @@ export function clearGallery() {
 }
 
 export function showLoader() {
-//   loader.style.display = 'block';
   loader.classList.add('is-active');
 }
 
 export function hideLoader() {
-//   loader.style.display = 'none';
 loader.classList.remove('is-active');
+}
+
+export function hideLoadMoreButton() {
+  btnLoadMore.classList.add('js-load-more-hidden');
+}
+
+export function showLoadMoreButton() {
+  btnLoadMore.classList.remove('js-load-more-hidden');
 }

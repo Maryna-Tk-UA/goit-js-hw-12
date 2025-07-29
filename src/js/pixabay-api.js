@@ -1,8 +1,3 @@
-// getImagesByQuery(query, page). Ця функція повинна приймати два 
-// параметри query (пошукове слово, яке є рядком) та page 
-// (номер сторінки, яка є числом), здійснювати HTTP-запит і 
-// повертати значення властивості data з отриманої відповіді
-
 import axios from 'axios';
 
 import iziToast from "izitoast";
@@ -11,32 +6,35 @@ import "izitoast/dist/css/iziToast.min.css";
 const API_KEY = "51359402-e1cf81f867165d4b6bb985455";
 const BASE_URL = 'https://pixabay.com/api/';
 
-// поки так
+export async function getImagesByQuery(query, page) {
 
-export function getImagesByQuery(query) {
-
-       const params = {
+    const params = {
         key: API_KEY,
         q: query,
         image_type: 'photo',
         orientation: 'horizontal',
-        safesearch: true 
+        safesearch: true,
+        per_page: 15,
+        page: page
         };
-    
-        return axios.get(BASE_URL, { params })
-            .then(response => response.data)
-            .catch(error => {
-                 iziToast.error({
-           message: "Ooooops! Something went wrong",
-            position: 'topRight',
-            backgroundColor: '#ef4040',
-            progressBar: false,
-            messageColor: "white",
-            icon: "",
-            iconUrl: new URL('../img/error.svg', import.meta.url).href,
-            close: false
-        })
-            }           
-            );
 
+   try {
+
+     const { data } = await axios(BASE_URL, { params });
+
+    return data;
+
+   } catch(error) {
+    //  iziToast.error({
+    //        message: "Ooooops! Something went wrong",
+    //         position: 'topRight',
+    //         backgroundColor: '#c30d7dff',
+    //         progressBar: false,
+    //         messageColor: "white",
+    //         icon: "",
+    //         iconUrl: new URL('../img/error.svg', import.meta.url).href,
+    //         close: false
+    //     });
+        throw error;
+   }
 }

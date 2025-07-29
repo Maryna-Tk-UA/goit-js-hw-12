@@ -18,21 +18,15 @@ import {createGallery,
     let currentQuery = "";
     let totalPages = 0;
 
-form.addEventListener("submit", handleClick);
+form.addEventListener("submit", handleSubmit);
 
- async function handleClick(event) {
+ async function handleSubmit(event) {
   event.preventDefault();
 
-  currentQuery = event.target.elements['search-text'].value.trim();
-  
-  showLoader(); 
-  hideLoadMoreButton();
-  clearGallery();
+  const query = event.target.elements['search-text'].value.trim();
 
-  if(currentQuery === "") {
+  if(query === "") {
 
-    hideLoader();
-    
     iziToast.error({
            message: "The search field cannot be empty",
             position: 'topRight',
@@ -46,10 +40,19 @@ form.addEventListener("submit", handleClick);
         return;
   }
 
+  page = 1;
+  currentQuery = query;
+
+  showLoader(); 
+  hideLoadMoreButton();
+  clearGallery();
+
+
   try {
     const data = await getImagesByQuery(currentQuery, page);
 
     if(data.hits.length === 0) {
+
       iziToast.warning({
            message: "Sorry, there are no images matching your search query. Please try again!",
             position: 'topRight',
@@ -59,13 +62,15 @@ form.addEventListener("submit", handleClick);
             icon: "",
             iconUrl: new URL('./img/error.svg', import.meta.url).href,
             close: false
-        })
+        });
+        hideLoadMoreButton();
+
         return;
     }
 
-    createGallery(data.hits);
-
     totalPages = Math.ceil(data.totalHits / perPage);
+
+    createGallery(data.hits);
 
     if(page >= totalPages) {
       iziToast.info({
@@ -77,7 +82,9 @@ form.addEventListener("submit", handleClick);
             icon: "",
             iconUrl: new URL('./img/wink.svg', import.meta.url).href,
             close: false
-        })
+        });
+
+        hideLoadMoreButton();
     } else {
       
         showLoadMoreButton();

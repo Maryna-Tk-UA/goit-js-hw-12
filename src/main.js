@@ -30,7 +30,9 @@ form.addEventListener("submit", handleClick);
   clearGallery();
 
   if(currentQuery === "") {
+
     hideLoader();
+    
     iziToast.error({
            message: "The search field cannot be empty",
             position: 'topRight',
@@ -43,8 +45,8 @@ form.addEventListener("submit", handleClick);
         })
         return;
   }
-  try {
 
+  try {
     const data = await getImagesByQuery(currentQuery, page);
 
     if(data.hits.length === 0) {
@@ -79,6 +81,7 @@ form.addEventListener("submit", handleClick);
     } else {
       
         showLoadMoreButton();
+
     }
 
   } catch(error) {
@@ -92,20 +95,22 @@ form.addEventListener("submit", handleClick);
             iconUrl: new URL('./img/error.svg', import.meta.url).href,
             close: false
         })
+
   } finally {
     hideLoader();
-  }
-  
+  } 
 }
 
 refs.btnLoadMore.addEventListener("click", loadMoreHandler);
 
 async function loadMoreHandler() {
   page++;
+
   hideLoadMoreButton();
   showLoader();
 
   try {
+
     const data = await getImagesByQuery(currentQuery, page);
     createGallery(data.hits);
     
@@ -123,6 +128,7 @@ async function loadMoreHandler() {
     } else {
       
         showLoadMoreButton();
+
     }
 
     const card = document.querySelector(".gallery-item");
@@ -145,10 +151,10 @@ async function loadMoreHandler() {
             iconUrl: new URL('./img/error.svg', import.meta.url).href,
             close: false
         })
+
   } finally {
     hideLoader();
   }
-  
 }
 
 
